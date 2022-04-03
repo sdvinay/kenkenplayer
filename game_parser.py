@@ -13,11 +13,11 @@ def get_puzzle(puzzle_id):
 def download_puzzle(puzzle_id):
     req = requests.post('http://www.kenkenpuzzle.com/find_puzzle', {'puzzle_id': puzzle_id})
     if req.status_code != 200:
-        raise RuntimeException('http error')
+        raise RuntimeException(f'http error {req.status_code}')
 
-    m = re.search('base64_decode\(\'([\w=]+)', req.text)
+    m = re.search('base64_decode\(\'([\w=]+)\'', req.text)
     if not m:
-        raise RuntimeException ('no regext match')
+        raise RuntimeException ('no regex match')
 
     puzzle_b64 = m.group(1)
     puzzle_raw = base64.b64decode(puzzle_b64) 
